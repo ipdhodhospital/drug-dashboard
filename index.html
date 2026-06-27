@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบตรวจสอบยาสำรอง | หอผู้ป่วยหญิง โรงพยาบาลฮอด</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-primary: #0F4C81;
+    --blue-mid: #1565A7;
+    --blue-light: #EAF6FF;
+    --blue-border: #C3E0FF;
+    --white: #FFFFFF;
+    --green: #28A745;
+    --green-light: #D4EDDA;
+    --yellow: #FFC107;
+    --yellow-light: #FFF3CD;
+    --red: #DC3545;
+    --red-light: #F8D7DA;
+    --gray-50: #F8FAFC;
+    --gray-100: #EFF2F7;
+    --gray-200: #E2E8F0;
+    --gray-400: #94A3B8;
+    --gray-600: #475569;
+    --gray-800: #1E293B;
+    --shadow-sm: 0 1px 3px rgba(15,76,129,0.08);
+    --shadow-md: 0 4px 16px rgba(15,76,129,0.12);
+    --shadow-lg: 0 8px 32px rgba(15,76,129,0.18);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+  [data-theme="dark"] {
+    --blue-primary: #4DA3FF;
+    --blue-mid: #3A91EE;
+    --blue-light: #0D1F33;
+    --blue-border: #1A3A5C;
+    --white: #0A1628;
+    --green: #4CCA6B;
+    --green-light: #0D2B15;
+    --yellow: #FFD84D;
+    --yellow-light: #2B2000;
+    --red: #FF6B78;
+    --red-light: #2B0A0D;
+    --gray-50: #0D1A2B;
+    --gray-100: #0F2030;
+    --gray-200: #1A3050;
+    --gray-400: #5A7A9A;
+    --gray-600: #8AAAC8;
+    --gray-800: #D0E8FF;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Sarabun','Inter',sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; transition: background 0.3s,color 0.3s; }
+
+  /* NAV */
+  .topnav { background: var(--blue-primary); color:#fff; padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(15,76,129,0.3); }
+  .topnav-brand { display:flex; align-items:center; gap:12px; }
+  .topnav-brand .logo { width:36px; height:36px; background:rgba(255,255,255,0.2); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+  .topnav-brand h1 { font-size:16px; font-weight:600; line-height:1.2; }
+  .topnav-brand h1 small { display:block; font-size:11px; font-weight:400; opacity:0.8; }
+  .topnav-actions { display:flex; align-items:center; gap:10px; }
+  .btn-icon { width:36px; height:36px; border:none; border-radius:8px; background:rgba(255,255,255,0.15); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; transition:background 0.2s; }
+  .btn-icon:hover { background:rgba(255,255,255,0.25); }
+  .clock-badge { background:rgba(255,255,255,0.15); border-radius:8px; padding:6px 12px; font-size:13px; font-weight:500; }
+
+  /* LAYOUT */
+  .main-wrap { max-width:1200px; margin:0 auto; padding:20px 16px 40px; }
+
+  /* HERO */
+  .scan-hero { background:linear-gradient(135deg,var(--blue-primary) 0%,var(--blue-mid) 100%); border-radius:var(--radius); padding:28px; margin-bottom:20px; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  .scan-hero-text h2 { font-size:22px; font-weight:700; margin-bottom:4px; }
+  .scan-hero-text p { font-size:14px; opacity:0.85; }
+  .btn-scan { background:#fff; color:var(--blue-primary); border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:8px; transition:transform 0.15s,box-shadow 0.15s; font-family:'Sarabun',sans-serif; box-shadow:0 2px 12px rgba(0,0,0,0.2); }
+  .btn-scan:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
+
+  /* STATS */
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
+  .stat-card { background:var(--white); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:14px; border:1px solid var(--gray-200); transition:box-shadow 0.2s; }
+  .stat-card:hover { box-shadow:var(--shadow-md); }
+  .stat-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .stat-icon.blue { background:var(--blue-light); }
+  .stat-icon.green { background:var(--green-light); }
+  .stat-icon.yellow { background:var(--yellow-light); }
+  .stat-icon.red { background:var(--red-light); }
+  .stat-num { font-size:26px; font-weight:700; line-height:1; }
+  .stat-num.green { color:var(--green); }
+  .stat-num.yellow { color:var(--yellow); }
+  .stat-num.red { color:var(--red); }
+  .stat-num.blue { color:var(--blue-primary); }
+  .stat-label { font-size:12px; color:var(--gray-600); margin-top:2px; }
+
+  /* CARDS */
+  .section-card { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-sm); border:1px solid var(--gray-200); margin-bottom:20px; overflow:hidden; }
+  .section-header { padding:16px 20px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .section-title { font-size:15px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .badge { display:inline-flex; align-items:center; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600; }
+  .badge-green { background:var(--green-light); color:var(--green); }
+  .badge-yellow { background:var(--yellow-light); color:#856404; }
+  .badge-red { background:var(--red-light); color:var(--red); }
+  .badge-blue { background:var(--blue-light); color:var(--blue-primary); }
+
+  /* TABLE */
+  .drug-table { width:100%; border-collapse:collapse; }
+  .drug-table th { background:var(--gray-50); padding:10px 16px; text-align:left; font-size:12px; font-weight:600; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid var(--gray-200); }
+  .drug-table td { padding:12px 16px; border-bottom:1px solid var(--gray-100); font-size:14px; vertical-align:middle; }
+  .drug-table tr:last-child td { border-bottom:none; }
+  .drug-table tr:hover td { background:var(--gray-50); }
+  .drug-name { font-weight:500; }
+  .qty-pill { display:inline-flex; align-items:center; justify-content:center; width:36px; height:28px; border-radius:8px; font-size:13px; font-weight:700; }
+  .qty-ok { background:var(--green-light); color:var(--green); }
+  .qty-warn { background:var(--yellow-light); color:#856404; }
+  .qty-critical { background:var(--red-light); color:var(--red); }
+  .status-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; }
+  .dot-green { background:var(--green); }
+  .dot-yellow { background:var(--yellow); }
+  .dot-red { background:var(--red); animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .btn-add { background:var(--blue-light); color:var(--blue-primary); border:1px solid var(--blue-border); border-radius:6px; padding:5px 12px; font-size:12px; font-weight:600; cursor:pointer; transition:background 0.2s; font-family:'Sarabun',sans-serif; }
+  .btn-add:hover { background:var(--blue-border); }
+  .cat-row td { background:var(--blue-light); font-size:12px; font-weight:700; color:var(--blue-primary); padding:7px 16px; letter-spacing:0.05em; text-transform:uppercase; }
+
+  /* SHIFT TABS */
+  .shift-tabs { display:flex; gap:6px; }
+  .shift-tab { padding:6px 14px; border-radius:8px; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'Sarabun',sans-serif; transition:all 0.2s; }
+  .shift-tab.active { background:var(--blue-primary); color:#fff; }
+  .shift-tab:not(.active) { background:var(--gray-100); color:var(--gray-600); }
+  .shift-tab:not(.active):hover { background:var(--blue-light); color:var(--blue-primary); }
+
+  /* PAGE TABS */
+  .page-tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--gray-100); border-radius:12px; padding:4px; }
+  .page-tab { flex:1; padding:10px; border:none; border-radius:8px; font-size:14px; font-weight:500; cursor:pointer; font-family:'Sarabun',sans-serif; transition:all 0.2s; text-align:center; }
+  .page-tab.active { background:var(--white); color:var(--blue-primary); font-weight:700; box-shadow:var(--shadow-sm); }
+  .page-tab:not(.active) { background:transparent; color:var(--gray-600); }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  /* MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:flex; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(2px); }
+  .modal-overlay.hidden { display:none; }
+  .modal-box { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-lg); width:100%; max-width:520px; max-height:90vh; overflow-y:auto; animation:slideUp 0.25s ease; }
+  @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .modal-header { padding:20px 24px 16px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--white); z-index:1; border-radius:var(--radius) var(--radius) 0 0; }
+  .modal-header h3 { font-size:18px; font-weight:700; }
+  .modal-body { padding:20px 24px; }
+  .modal-footer { padding:16px 24px; border-top:1px solid var(--gray-200); display:flex; gap:10px; justify-content:flex-end; }
+  .form-group { margin-bottom:16px; }
+  .form-label { display:block; font-size:13px; font-weight:600; color:var(--gray-600); margin-bottom:6px; }
+  .form-control { width:100%; padding:10px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--gray-200); background:var(--gray-50); font-size:15px; color:var(--gray-800); font-family:'Sarabun',sans-serif; transition:border-color 0.2s,box-shadow 0.2s; outline:none; }
+  .form-control:focus { border-color:var(--blue-primary); box-shadow:0 0 0 3px rgba(15,76,129,0.1); background:var(--white); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .btn { padding:10px 20px; border-radius:var(--radius-sm); font-size:14px; font-weight:600; cursor:pointer; border:none; font-family:'Sarabun',sans-serif; transition:all 0.2s; }
+  .btn-primary { background:var(--blue-primary); color:#fff; }
+  .btn-primary:hover { background:var(--blue-mid); }
+  .btn-success { background:var(--green); color:#fff; }
+  .btn-success:hover { filter:brightness(1.1); }
+  .btn-danger { background:var(--red); color:#fff; }
+  .btn-secondary { background:var(--gray-100); color:var(--gray-600); }
+  .btn-secondary:hover { background:var(--gray-200); }
+
+  /* MISSING ALERT */
+  .missing-alert { border:2px solid var(--red); border-radius:var(--radius); background:var(--red-light); padding:0; overflow:hidden; margin-bottom:20px; }
+  .missing-alert-header { background:var(--red); color:#fff; padding:14px 20px; display:flex; align-items:center; gap:10px; font-size:15px; font-weight:700; }
+  .missing-alert-body { padding:16px 20px; }
+  .missing-drug-item { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--white); border-radius:var(--radius-sm); margin-bottom:8px; border:1px solid #f5c6cb; gap:10px; flex-wrap:wrap; }
+  .missing-drug-info { flex:1; }
+  .missing-drug-name { font-weight:600; font-size:14px; }
+  .missing-drug-detail { font-size:12px; color:var(--red); margin-top:2px; }
+  .missing-input-row { display:flex; align-items:center; gap:8px; }
+  .missing-input { width:70px; padding:6px 10px; border-radius:6px; border:1.5px solid var(--gray-200); font-size:14px; text-align:center; font-family:'Sarabun',sans-serif; background:var(--white); color:var(--gray-800); }
+  .missing-input:focus { border-color:var(--blue-primary); outline:none; }
+
+  /* HISTORY */
+  .history-item { padding:12px 20px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; gap:14px; }
+  .history-item:last-child { border-bottom:none; }
+  .history-info { flex:1; }
+  .history-nurse { font-size:13px; font-weight:500; }
+  .history-detail { font-size:12px; color:var(--gray-400); }
+
+  /* SUCCESS */
+  .success-screen { text-align:center; padding:32px 24px; }
+  .success-icon { font-size:64px; margin-bottom:16px; }
+  .success-title { font-size:22px; font-weight:700; color:var(--green); margin-bottom:8px; }
+  .success-sub { font-size:14px; color:var(--gray-600); }
+
+  /* TOAST */
+  .toast-container { position:fixed; bottom:20px; right:20px; z-index:300; display:flex; flex-direction:column; gap:8px; }
+  .toast { background:var(--gray-800); color:#fff; padding:12px 18px; border-radius:10px; font-size:14px; font-weight:500; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:8px; animation:toastIn 0.3s ease; max-width:320px; }
+  .toast.success { background:var(--green); }
+  .toast.error { background:var(--red); }
+  .toast.warning { background:#cc9500; }
+  @keyframes toastIn { from{transform:translateX(100%);opacity:0} to{transform:translateX(0);opacity:1} }
+
+  /* FOOTER */
+  .footer { text-align:center; padding:24px; font-size:12px; color:var(--gray-400); border-top:1px solid var(--gray-200); margin-top:10px; }
+  .footer strong { color:var(--blue-primary); }
+
+  /* EMPTY */
+  .empty-state { padding:40px; text-align:center; color:var(--gray-400); }
+  .empty-state .empty-icon { font-size:40px; margin-bottom:10px; }
+
+  /* RESPONSIVE */
+  @media (max-width:768px) {
+    .stats-row { grid-template-columns:repeat(2,1fr); }
+    .scan-hero { flex-direction:column; align-items:flex-start; }
+    .form-row { grid-template-columns:1fr; }
+    .topnav-brand h1 { font-size:14px; }
+    .drug-table th:nth-child(4),.drug-table td:nth-child(4) { display:none; }
+  }
+  @media (max-width:480px) {
+    .stats-row { grid-template-columns:1fr 1fr; }
+    .main-wrap { padding:12px 10px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="topnav-brand">
+    <div class="logo">🏥</div>
+    <h1>ระบบยาสำรอง
+      <small>หอผู้ป่วยหญิง • โรงพยาบาลฮอด</small>
+    </h1>
+  </div>
+  <div class="topnav-actions">
+    <div class="clock-badge" id="clock">--:--:--</div>
+    <button class="btn-icon" onclick="toggleTheme()" title="เปลี่ยนธีม" id="themeBtn">🌙</button>
+  </div>
+</nav>
+
+<div class="main-wrap">
+
+  <!-- MISSING DRUGS ALERT -->
+  <div class="missing-alert" id="missingAlert" style="display:none">
+    <div class="missing-alert-header">
+      <span>⚠️</span>
+      <span>ยาขาดสต๊อก — กรุณาเติมและยืนยันจำนวน</span>
+    </div>
+    <div class="missing-alert-body" id="missingAlertBody"></div>
+    <div style="padding:0 20px 16px;display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="dismissMissingAlert()">ยกเลิก</button>
+      <button class="btn btn-danger" onclick="confirmRestock()">✓ ยืนยันเติมสต๊อก</button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="scan-hero">
+    <div class="scan-hero-text">
+      <h2>📋 บันทึกการเช็คสต๊อกยา</h2>
+      <p>กดปุ่มด้านขวาเพื่อเริ่มบันทึก • ข้อมูลบันทึกใน Google Sheet อัตโนมัติ</p>
+    </div>
+    <div>
+      <button class="btn-scan" onclick="openCheckModal()">
+        <span>✏️</span> บันทึกการตรวจ
+      </button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">💊</div>
+      <div><div class="stat-num blue" id="statTotal">17</div><div class="stat-label">รายการยาทั้งหมด</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">✅</div>
+      <div><div class="stat-num green" id="statOk">0</div><div class="stat-label">ยาครบ / ปกติ</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon yellow">⚠️</div>
+      <div><div class="stat-num yellow" id="statWarn">0</div><div class="stat-label">ยาใกล้หมด</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red">🚨</div>
+      <div><div class="stat-num red" id="statCritical">0</div><div class="stat-label">ยาขาดสต๊อก</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="page-tabs">
+    <button class="page-tab active" onclick="switchTab('tab-reserve',this)">🗄️ ยาสำรอง</button>
+    <button class="page-tab" onclick="switchTab('tab-narcotic',this)">💉 ยาเสพติด</button>
+    <button class="page-tab" onclick="switchTab('tab-history',this)">📜 ประวัติการเช็ค</button>
+  </div>
+
+  <!-- TAB: ยาสำรอง -->
+  <div class="tab-content active" id="tab-reserve">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">🗄️ บัญชียาสำรองในหอผู้ป่วย</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div class="shift-tabs">
+            <button class="shift-tab active" onclick="setShift('N',this)">เวร N</button>
+            <button class="shift-tab" onclick="setShift('D',this)">เวร D</button>
+            <button class="shift-tab" onclick="setShift('E',this)">เวร E</button>
+          </div>
+          <span class="badge badge-blue" id="shiftBadge">เวรดึก (N)</span>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="drug-table">
+          <thead><tr><th>#</th><th>ชื่อยา</th><th>จำนวนมาตรฐาน</th><th>สต๊อกปัจจุบัน</th><th>สถานะ</th><th>ดำเนินการ</th></tr></thead>
+          <tbody id="reserveTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ยาเสพติด -->
+  <div class="tab-content" id="tab-narcotic">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">💉 บัญชียาเสพติดสำรอง</div>
+        <div class="shift-tabs">
+          <button class="shift-tab active" onclick="setShiftN('N',this)">เวร N</button>
+          <button class="shift-tab" onclick="setShiftN('D',this)">เวร D</button>
+          <button class="shift-tab" onclick="setShiftN('E',this)">เวร E</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="drug-table">
+          <thead><tr><th>#</th><th>ชื่อยา</th><th>จำนวนมาตรฐาน</th><th>สต๊อกปัจจุบัน</th><th>สถานะ</th><th>ดำเนินการ</th></tr></thead>
+          <tbody id="narcoticTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ประวัติ -->
+  <div class="tab-content" id="tab-history">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">📜 ประวัติการเช็คสต๊อก</div>
+        <button class="btn btn-secondary" onclick="clearHistory()" style="font-size:12px;padding:6px 12px">ล้างประวัติ</button>
+      </div>
+      <div id="historyList">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div>ยังไม่มีการบันทึก</div>
+          <div style="font-size:12px;margin-top:4px">กด "บันทึกการตรวจ" เพื่อเริ่มต้น</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Crafted with ❤️ by <strong>NamfonThayos</strong> &nbsp;|&nbsp;
+  ระบบบันทึกการตรวจสอบยา หอผู้ป่วยหญิง โรงพยาบาลฮอด
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- MODAL: บันทึกการตรวจ -->
+<div class="modal-overlay hidden" id="checkModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="checkModalTitle">✏️ บันทึกการตรวจสต๊อกยา</h3>
+      <button class="btn-icon" style="background:var(--gray-100);color:var(--gray-600)" onclick="closeModal('checkModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="checkStep1">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">วันที่ตรวจ *</label>
+            <input type="date" class="form-control" id="checkDate">
+          </div>
+          <div class="form-group">
+            <label class="form-label">เวลาตรวจ *</label>
+            <input type="time" class="form-control" id="checkTime">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">เวรที่ตรวจ *</label>
+          <select class="form-control" id="checkShift">
+            <option value="N">เวร N (ดึก 00:00 - 08:00)</option>
+            <option value="D">เวร D (เช้า 08:00 - 16:00)</option>
+            <option value="E">เวร E (บ่าย 16:00 - 24:00)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ชื่อผู้ตรวจ *</label>
+          <input type="text" class="form-control" id="checkNurse" placeholder="ระบุชื่อ-นามสกุลผู้ตรวจ">
+        </div>
+        <div class="form-group">
+          <label class="form-label">ประเภทยาที่ตรวจ *</label>
+          <select class="form-control" id="checkDrugType">
+            <option value="all">ทั้งหมด (ยาสำรอง + ยาเสพติด)</option>
+            <option value="reserve">ยาสำรองในหอผู้ป่วย</option>
+            <option value="narcotic">ยาเสพติด</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">การตรวจครั้งก่อน</label>
+          <div id="prevCheckInfo" style="background:var(--blue-light);border:1px solid var(--blue-border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--gray-600)">
+            — ยังไม่มีข้อมูลการตรวจครั้งก่อน —
+          </div>
+        </div>
+      </div>
+      <div id="checkStep2" style="display:none">
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px">กรุณาระบุจำนวนยาที่นับได้จริง:</p>
+        <div id="drugCountForm"></div>
+      </div>
+      <div id="checkStep3" style="display:none">
+        <div class="success-screen">
+          <div class="success-icon">✅</div>
+          <div class="success-title">บันทึกสำเร็จ!</div>
+          <div class="success-sub" id="successDetail"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" id="checkModalFooter">
+      <button class="btn btn-secondary" onclick="closeModal('checkModal')">ยกเลิก</button>
+      <button class="btn btn-primary" id="checkNextBtn" onclick="checkNext()">ถัดไป →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: เพิ่มสต๊อก -->
+<div class="modal-overlay hidden" id="addStockModal">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-header">
+      <h3>➕ เพิ่มสต๊อกยา</h3>
+      <button class="btn-icon" style="background:var(--gray-100);color:var(--gray-600)" onclick="closeModal('addStockModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">ชื่อยา</label>
+        <div id="addStockDrugName" style="font-weight:600;font-size:15px;color:var(--blue-primary);padding:8px 0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">สต๊อกปัจจุบัน</label>
+          <div id="addStockCurrent" style="font-size:22px;font-weight:700;color:var(--red);padding:4px 0">0</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">จำนวนมาตรฐาน</label>
+          <div id="addStockStd" style="font-size:22px;font-weight:700;color:var(--green);padding:4px 0">0</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">จำนวนที่เติมเข้า *</label>
+        <input type="number" class="form-control" id="addStockQty" min="1" placeholder="ระบุจำนวน">
+      </div>
+      <div class="form-group">
+        <label class="form-label">หมายเหตุ</label>
+        <input type="text" class="form-control" id="addStockNote" placeholder="เช่น เบิกจากห้องยา">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('addStockModal')">ยกเลิก</button>
+      <button class="btn btn-success" onclick="confirmAddStock()">✓ บันทึกเพิ่มสต๊อก</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// ข้อมูลยา
+// ================================================================
+const DRUGS_RESERVE = [
+  { id:'r1',  name:'50%Glucose 50 ml',                          category:'ยาฉีด',          location:'ตู้ยาสำรอง',    std:2,  current:2  },
+  { id:'r2',  name:'Diazepam 10mg/ml inj',                      category:'ยาฉีด',          location:'ตู้ยาสำรอง',    std:2,  current:2  },
+  { id:'r3',  name:'Haloperidol 5mg/ml inj',                    category:'ยาฉีด',          location:'ตู้ยาสำรอง',    std:1,  current:1  },
+  { id:'r4',  name:'ASA 300 mg',                                category:'ยาเม็ด',         location:'ตู้ยาสำรอง',    std:3,  current:3  },
+  { id:'r5',  name:'Clopidogrel 75 mg',                         category:'ยาเม็ด',         location:'ตู้ยาสำรอง',    std:4,  current:4  },
+  { id:'r6',  name:'Isordil SL 5 mg',                           category:'ยาเม็ด',         location:'ตู้ยาสำรอง',    std:3,  current:3  },
+  { id:'r7',  name:'Adenosine 3mg/ml inj.',                     category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:3,  current:3  },
+  { id:'r8',  name:'Adrenaline 1mg/ml inj.',                    category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:10, current:10 },
+  { id:'r9',  name:'Amiodarone 150mg/3ml inj.',                 category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:9,  current:9  },
+  { id:'r10', name:'Atropine 0.6 mg/ml inj.',                   category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:3,  current:3  },
+  { id:'r11', name:'Calcium gluconate 1gm/10ml inj.',           category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:1,  current:1  },
+  { id:'r12', name:'Sodium bicarbonate 7.5% 50ml inj.',         category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:2,  current:2  },
+  { id:'r13', name:'Norepinephrine (Levophed) 4mg/4ml inj.',    category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:1,  current:1  },
+  { id:'r14', name:'50% Magnesium sulfate 1gm/2ml inj.',        category:'กล่องยาฉุกเฉิน', location:'รถ Emergency',   std:2,  current:2  },
+];
+const DRUGS_NARCOTIC = [
+  { id:'n1', name:'Morphine inj 10mg/ml',   category:'ยาเสพติด', location:'ตู้ยาเสพติด', std:5, current:5 },
+  { id:'n2', name:'Pethidine inj 50 mg/ml', category:'ยาเสพติด', location:'ตู้ยาเสพติด', std:2, current:2 },
+  { id:'n3', name:'Midazolam inj 5mg/ml',   category:'ยาเสพติด', location:'ตู้ยาเสพติด', std:1, current:1 },
+];
+
+// ================================================================
+// Google Sheet — Web App URL
+// ================================================================
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbz0bCigT10DbL0RdEcdzbX8e3Xo8REldtCfPrtyhCoGxZ16eZIhFw-ZNks9GU0enAHyiA/exec';
+
+async function sendToSheet(rows) {
+  if (!rows.length) return;
+  try {
+    showToast('⏳ กำลังบันทึกลง Google Sheet...', '');
+    await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rows })
+    });
+    showToast('☁️ บันทึกลง Google Sheet แล้ว', 'success');
+  } catch (err) {
+    console.error(err);
+    showToast('⚠️ ส่งข้อมูลไป Sheet ไม่สำเร็จ', 'warning');
+  }
+}
+
+// ================================================================
+// State
+// ================================================================
+let checkHistory = [];
+let currentAddDrugId = null;
+let checkStep = 1;
+let isDark = false;
+
+// ================================================================
+// Clock
+// ================================================================
+function updateClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('th-TH');
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ================================================================
+// Theme
+// ================================================================
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
+  document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+}
+
+// ================================================================
+// Stats
+// ================================================================
+function updateStats() {
+  const all = [...DRUGS_RESERVE, ...DRUGS_NARCOTIC];
+  let ok=0, warn=0, critical=0;
+  all.forEach(d => {
+    if (d.current === 0) critical++;
+    else if (d.current / d.std < 0.5) warn++;
+    else ok++;
+  });
+  document.getElementById('statTotal').textContent = all.length;
+  document.getElementById('statOk').textContent = ok;
+  document.getElementById('statWarn').textContent = warn;
+  document.getElementById('statCritical').textContent = critical;
+}
+
+// ================================================================
+// Drug status helper
+// ================================================================
+function getDrugStatus(d) {
+  if (d.current === 0) return { label:'ขาดสต๊อก', cls:'red', dotCls:'dot-red', qCls:'qty-critical' };
+  if (d.current / d.std < 0.5) return { label:'ใกล้หมด', cls:'yellow', dotCls:'dot-yellow', qCls:'qty-warn' };
+  return { label:'ปกติ', cls:'green', dotCls:'dot-green', qCls:'qty-ok' };
+}
+
+// ================================================================
+// Render tables
+// ================================================================
+function renderTable(drugs, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = '';
+  let lastCat = null, idx = 1;
+  drugs.forEach(d => {
+    if (d.category !== lastCat) {
+      const tr = document.createElement('tr');
+      tr.className = 'cat-row';
+      tr.innerHTML = `<td colspan="6">📁 ${d.category} — ${d.location}</td>`;
+      tbody.appendChild(tr);
+      lastCat = d.category;
+    }
+    const st = getDrugStatus(d);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:var(--gray-400);font-size:12px">${idx++}</td>
+      <td><div class="drug-name">${d.name}</div></td>
+      <td><span class="qty-pill" style="background:var(--blue-light);color:var(--blue-primary)">${d.std}</span></td>
+      <td><span class="qty-pill ${st.qCls}">${d.current}</span></td>
+      <td><span class="status-dot ${st.dotCls}"></span><span class="badge badge-${st.cls==='green'?'green':st.cls==='yellow'?'yellow':'red'}">${st.label}</span></td>
+      <td><button class="btn-add" onclick="openAddStock('${d.id}')">+ เติม</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderAll() {
+  renderTable(DRUGS_RESERVE, 'reserveTableBody');
+  renderTable(DRUGS_NARCOTIC, 'narcoticTableBody');
+  updateStats();
+}
+
+// ================================================================
+// Tabs & Shifts
+// ================================================================
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const SHIFT_LABELS = { N:'เวรดึก (N)', D:'เวรเช้า (D)', E:'เวรบ่าย (E)' };
+function setShift(s, btn) {
+  btn.parentElement.querySelectorAll('.shift-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('shiftBadge').textContent = SHIFT_LABELS[s];
+}
+function setShiftN(s, btn) {
+  btn.parentElement.querySelectorAll('.shift-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ================================================================
+// Modal utils
+// ================================================================
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+  if (id === 'checkModal') { checkStep = 1; resetCheckModal(); }
+}
+
+// ================================================================
+// Check modal
+// ================================================================
+function openCheckModal() {
+  const now = new Date();
+  document.getElementById('checkDate').value = now.toISOString().split('T')[0];
+  document.getElementById('checkTime').value = now.toTimeString().slice(0,5);
+  const h = now.getHours();
+  document.getElementById('checkShift').value = h>=8&&h<16?'D':h>=16?'E':'N';
+  if (checkHistory.length > 0) {
+    const last = checkHistory[0];
+    document.getElementById('prevCheckInfo').innerHTML =
+      `<strong>ครั้งล่าสุด:</strong> ${last.date} ${last.time} | เวร ${last.shift} | โดย ${last.nurse}
+       <br><span style="color:var(--green)">✓ ${last.ok} รายการปกติ</span>
+       ${last.missing>0?`&nbsp;<span style="color:var(--red)">⚠ ${last.missing} รายการขาด</span>`:''}`;
+  }
+  checkStep=1;
+  document.getElementById('checkStep1').style.display='';
+  document.getElementById('checkStep2').style.display='none';
+  document.getElementById('checkStep3').style.display='none';
+  document.getElementById('checkNextBtn').style.display='';
+  document.getElementById('checkNextBtn').textContent='ถัดไป →';
+  document.getElementById('checkModalTitle').textContent='✏️ บันทึกการตรวจสต๊อกยา';
+  document.getElementById('checkModalFooter').style.display='';
+  openModal('checkModal');
+}
+
+function resetCheckModal() {
+  document.getElementById('checkNurse').value='';
+  document.getElementById('drugCountForm').innerHTML='';
+}
+
+function checkNext() {
+  if (checkStep===1) {
+    const nurse = document.getElementById('checkNurse').value.trim();
+    if (!nurse) { showToast('กรุณาระบุชื่อผู้ตรวจ','error'); return; }
+    const type = document.getElementById('checkDrugType').value;
+    let drugs=[];
+    if (type==='all'||type==='reserve') drugs=drugs.concat(DRUGS_RESERVE);
+    if (type==='all'||type==='narcotic') drugs=drugs.concat(DRUGS_NARCOTIC);
+    const form = document.getElementById('drugCountForm');
+    form.innerHTML='';
+    drugs.forEach(d => {
+      const div = document.createElement('div');
+      div.style.cssText='display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-100);flex-wrap:wrap';
+      div.innerHTML=`
+        <div style="flex:1;min-width:150px">
+          <div style="font-size:13px;font-weight:500">${d.name}</div>
+          <div style="font-size:11px;color:var(--gray-400)">มาตรฐาน: ${d.std} | ปัจจุบัน: ${d.current}</div>
+        </div>
+        <input type="number" min="0" value="${d.current}" data-id="${d.id}"
+          style="width:80px;padding:8px;border-radius:8px;border:1.5px solid var(--gray-200);font-size:15px;text-align:center;font-family:Sarabun,sans-serif;background:var(--gray-50);color:var(--gray-800)"
+          oninput="highlightInput(this,${d.std})">`;
+      form.appendChild(div);
+    });
+    checkStep=2;
+    document.getElementById('checkStep1').style.display='none';
+    document.getElementById('checkStep2').style.display='';
+    document.getElementById('checkNextBtn').textContent='บันทึก ✓';
+    document.getElementById('checkModalTitle').textContent='📊 ระบุจำนวนที่นับได้';
+  } else if (checkStep===2) {
+    saveCheckRecord();
+  }
+}
+
+function highlightInput(inp, std) {
+  const v=parseInt(inp.value)||0;
+  inp.style.borderColor=v===0?'var(--red)':v<std?'var(--yellow)':'var(--green)';
+}
+
+// ================================================================
+// Save check → Google Sheet
+// ================================================================
+function saveCheckRecord() {
+  const date   = document.getElementById('checkDate').value;
+  const time   = document.getElementById('checkTime').value;
+  const shift  = document.getElementById('checkShift').value;
+  const nurse  = document.getElementById('checkNurse').value.trim();
+  const inputs = document.querySelectorAll('#drugCountForm input[data-id]');
+  let ok=0, missing=[];
+  const sheetRows=[];
+
+  inputs.forEach(inp => {
+    const id  = inp.getAttribute('data-id');
+    const val = parseInt(inp.value)||0;
+    const drug= [...DRUGS_RESERVE,...DRUGS_NARCOTIC].find(d=>d.id===id);
+    if (drug) {
+      drug.current=val;
+      const status=val===0?'ขาดสต๊อก':val<drug.std?'ใกล้หมด':'ปกติ';
+      if (val>=drug.std) ok++;
+      else missing.push({...drug,counted:val});
+      sheetRows.push({ type:'CHECK', date, time, shift, nurse,
+        drugName:drug.name, category:drug.category, location:drug.location,
+        standard:drug.std, counted:val, status, note:'' });
+    }
+  });
+
+  sendToSheet(sheetRows);
+  checkHistory.unshift({ date, time, shift, nurse, ok, missing:missing.length, timestamp:Date.now() });
+  renderAll();
+  renderHistory();
+
+  if (missing.length>0) {
+    showMissingAlert(missing);
+    closeModal('checkModal');
+    showToast(`⚠️ พบยาขาดสต๊อก ${missing.length} รายการ`,'warning');
+  } else {
+    checkStep=3;
+    document.getElementById('checkStep2').style.display='none';
+    document.getElementById('checkStep3').style.display='';
+    document.getElementById('checkNextBtn').style.display='none';
+    document.getElementById('successDetail').innerHTML=
+      `วันที่ ${date} เวลา ${time} เวร ${shift}<br>ตรวจโดย ${nurse}<br>ยาครบ ${ok} รายการ ✅`;
+    showToast('บันทึกสำเร็จ! ยาครบทุกรายการ','success');
+    setTimeout(()=>closeModal('checkModal'),2500);
+  }
+}
+
+// ================================================================
+// Missing alert
+// ================================================================
+function showMissingAlert(missing) {
+  const body=document.getElementById('missingAlertBody');
+  body.innerHTML='';
+  missing.forEach(d=>{
+    const div=document.createElement('div');
+    div.className='missing-drug-item';
+    div.setAttribute('data-id',d.id);
+    div.innerHTML=`
+      <div class="missing-drug-info">
+        <div class="missing-drug-name">⚠️ ${d.name}</div>
+        <div class="missing-drug-detail">มีอยู่ ${d.counted} | ขาด ${d.std-d.counted} | มาตรฐาน ${d.std}</div>
+      </div>
+      <div class="missing-input-row">
+        <label style="font-size:12px;color:var(--gray-600)">เติมเพิ่ม:</label>
+        <input type="number" class="missing-input" data-id="${d.id}" min="0" value="${d.std-d.counted}">
+      </div>`;
+    body.appendChild(div);
+  });
+  document.getElementById('missingAlert').style.display='';
+  document.getElementById('missingAlert').scrollIntoView({behavior:'smooth'});
+}
+
+function confirmRestock() {
+  const now=new Date();
+  const date=now.toISOString().split('T')[0];
+  const time=now.toTimeString().slice(0,5);
+  const inputs=document.querySelectorAll('#missingAlertBody input[data-id]');
+  const sheetRows=[];
+  inputs.forEach(inp=>{
+    const id=inp.getAttribute('data-id');
+    const add=parseInt(inp.value)||0;
+    const drug=[...DRUGS_RESERVE,...DRUGS_NARCOTIC].find(d=>d.id===id);
+    if (drug&&add>0) {
+      drug.current=Math.min(drug.current+add,drug.std);
+      sheetRows.push({ type:'RESTOCK', date, time, shift:'-', nurse:'เติมสต๊อก',
+        drugName:drug.name, category:drug.category, location:drug.location,
+        standard:drug.std, counted:drug.current,
+        status:drug.current>=drug.std?'ปกติ':'ใกล้หมด',
+        note:`เติมเพิ่ม ${add} หน่วย` });
+    }
+  });
+  sendToSheet(sheetRows);
+  renderAll();
+  dismissMissingAlert();
+  showToast('✅ บันทึกการเติมสต๊อกเรียบร้อย','success');
+}
+
+function dismissMissingAlert() {
+  document.getElementById('missingAlert').style.display='none';
+}
+
+// ================================================================
+// Add stock modal
+// ================================================================
+function openAddStock(id) {
+  const drug=[...DRUGS_RESERVE,...DRUGS_NARCOTIC].find(d=>d.id===id);
+  if (!drug) return;
+  currentAddDrugId=id;
+  document.getElementById('addStockDrugName').textContent=drug.name;
+  document.getElementById('addStockCurrent').textContent=drug.current;
+  document.getElementById('addStockStd').textContent=drug.std;
+  document.getElementById('addStockQty').value=Math.max(0,drug.std-drug.current);
+  document.getElementById('addStockNote').value='';
+  openModal('addStockModal');
+}
+
+function confirmAddStock() {
+  const qty=parseInt(document.getElementById('addStockQty').value)||0;
+  if (qty<=0) { showToast('กรุณาระบุจำนวนที่ถูกต้อง','error'); return; }
+  const note=document.getElementById('addStockNote').value.trim();
+  const drug=[...DRUGS_RESERVE,...DRUGS_NARCOTIC].find(d=>d.id===currentAddDrugId);
+  if (drug) {
+    drug.current=Math.min(drug.current+qty,drug.std*2);
+    const now=new Date();
+    sendToSheet([{ type:'ADD_STOCK',
+      date:now.toISOString().split('T')[0], time:now.toTimeString().slice(0,5),
+      shift:'-', nurse:'เพิ่มสต๊อก',
+      drugName:drug.name, category:drug.category, location:drug.location,
+      standard:drug.std, counted:drug.current,
+      status:drug.current>=drug.std?'ปกติ':'ใกล้หมด',
+      note:note||`เพิ่ม ${qty} หน่วย` }]);
+    renderAll();
+    showToast(`✅ เพิ่มสต๊อก ${drug.name} +${qty}`,'success');
+  }
+  closeModal('addStockModal');
+}
+
+// ================================================================
+// History
+// ================================================================
+function renderHistory() {
+  const list=document.getElementById('historyList');
+  if (!checkHistory.length) {
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div>ยังไม่มีการบันทึก</div><div style="font-size:12px;margin-top:4px">กด "บันทึกการตรวจ" เพื่อเริ่มต้น</div></div>`;
+    return;
+  }
+  list.innerHTML=checkHistory.map(h=>`
+    <div class="history-item">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--blue-primary)">${h.date}</div>
+        <div style="font-size:12px;color:var(--gray-400)">${h.time}</div>
+      </div>
+      <div class="history-info">
+        <div class="history-nurse">👩‍⚕️ ${h.nurse}</div>
+        <div class="history-detail">เวร ${h.shift} | ยาครบ ${h.ok} รายการ ${h.missing>0?`| ⚠️ ขาด ${h.missing} รายการ`:''}</div>
+      </div>
+      <div><span class="badge badge-blue">เวร ${h.shift}</span></div>
+      <div><span class="badge ${h.missing>0?'badge-red':'badge-green'}">${h.missing>0?'⚠️ มีขาด':'✅ ครบ'}</span></div>
+    </div>`).join('');
+}
+
+function clearHistory() {
+  if (!confirm('ต้องการล้างประวัติการเช็คทั้งหมด?')) return;
+  checkHistory=[];
+  renderHistory();
+  showToast('ล้างประวัติแล้ว','success');
+}
+
+// ================================================================
+// Toast
+// ================================================================
+function showToast(msg,type='') {
+  const c=document.getElementById('toastContainer');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>t.remove(),3500);
+}
+
+// ================================================================
+// Init
+// ================================================================
+renderAll();
+renderHistory();
+</script>
+</body>
+</html>
