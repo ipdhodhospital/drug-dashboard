@@ -334,7 +334,6 @@
     <div class="section-card">
       <div class="section-header">
         <div class="section-title">📜 ประวัติการเช็คสต๊อก</div>
-        <button class="btn btn-secondary" onclick="clearHistory()" style="font-size:12px;padding:6px 12px">ล้างประวัติ</button>
       </div>
       <div id="historyList">
         <div class="empty-state">
@@ -508,12 +507,41 @@ async function sendToSheet(rows) {
 }
 
 // ================================================================
-// State
+// State — เก็บใน localStorage ให้คงอยู่ข้ามผู้ใช้/รีเฟรช
 // ================================================================
-let checkHistory = [];
+const LS_HISTORY = 'drug_history_v1';
+const LS_MISSING = 'drug_missing_v1';
+const LS_STOCK   = 'drug_stock_v1';
+
 let currentAddDrugId = null;
 let checkStep = 1;
 let isDark = false;
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(LS_HISTORY)||'[]'); } catch(e){ return []; }
+}
+function saveHistory(arr) {
+  localStorage.setItem(LS_HISTORY, JSON.stringify(arr));
+}
+function loadMissingPending() {
+  try { return JSON.parse(localStorage.getItem(LS_MISSING)||'null'); } catch(e){ return null; }
+}
+function saveMissingPending(arr) {
+  if(arr&&arr.length>0) localStorage.setItem(LS_MISSING, JSON.stringify(arr));
+  else localStorage.removeItem(LS_MISSING);
+}
+function saveStock() {
+  const s={};
+  [...DRUGS_RESERVE,...DRUGS_NARCOTIC].forEach(d=>s[d.id]=d.current);
+  localStorage.setItem(LS_STOCK, JSON.stringify(s));
+}
+function applyStock() {
+  try {
+    const s=JSON.parse(localStorage.getItem(LS_STOCK)||'null');
+    if(!s) return;
+    [...DRUGS_RESERVE,...DRUGS_NARCOTIC].forEach(d=>{ if(s[d.id]!==undefined) d.current=s[d.id]; });
+  } catch(e){}
+}
 
 // ================================================================
 // Clock
@@ -632,8 +660,9 @@ function openCheckModal() {
   document.getElementById('checkTime').value = now.toTimeString().slice(0,5);
   const h = now.getHours();
   document.getElementById('checkShift').value = h>=8&&h<16?'D':h>=16?'E':'N';
-  if (checkHistory.length > 0) {
-    const last = checkHistory[0];
+  const hist = loadHistory();
+  if (hist.length > 0) {
+    const last = hist[0];
     document.getElementById('prevCheckInfo').innerHTML =
       `<strong>ครั้งล่าสุด:</strong> ${last.date} ${last.time} | เวร ${last.shift} | โดย ${last.nurse}
        <br><span style="color:var(--green)">✓ ${last.ok} รายการปกติ</span>
@@ -720,16 +749,24 @@ function saveCheckRecord() {
     }
   });
 
+  // บันทึก stock + ประวัติลง localStorage
+  saveStock();
+  const hist = loadHistory();
+  hist.unshift({ date, time, shift, nurse, ok, missing:missing.length, timestamp:Date.now() });
+  saveHistory(hist);
+
   sendToSheet(sheetRows);
-  checkHistory.unshift({ date, time, shift, nurse, ok, missing:missing.length, timestamp:Date.now() });
   renderAll();
   renderHistory();
 
   if (missing.length>0) {
+    // ✅ FIX 1: บันทึก missing ค้างไว้ใน localStorage
+    saveMissingPending(missing);
     showMissingAlert(missing);
     closeModal('checkModal');
     showToast(`⚠️ พบยาขาดสต๊อก ${missing.length} รายการ`,'warning');
   } else {
+    saveMissingPending(null);
     checkStep=3;
     document.getElementById('checkStep2').style.display='none';
     document.getElementById('checkStep3').style.display='';
@@ -742,23 +779,24 @@ function saveCheckRecord() {
 }
 
 // ================================================================
-// Missing alert
+// Missing alert — คงค้างจนกว่าจะกดยืนยัน
 // ================================================================
 function showMissingAlert(missing) {
   const body=document.getElementById('missingAlertBody');
   body.innerHTML='';
   missing.forEach(d=>{
+    const have = d.counted !== undefined ? d.counted : d.current;
     const div=document.createElement('div');
     div.className='missing-drug-item';
     div.setAttribute('data-id',d.id);
     div.innerHTML=`
       <div class="missing-drug-info">
         <div class="missing-drug-name">⚠️ ${d.name}</div>
-        <div class="missing-drug-detail">มีอยู่ ${d.counted} | ขาด ${d.std-d.counted} | มาตรฐาน ${d.std}</div>
+        <div class="missing-drug-detail">มีอยู่ ${have} | ขาด ${d.std-have} | มาตรฐาน ${d.std}</div>
       </div>
       <div class="missing-input-row">
         <label style="font-size:12px;color:var(--gray-600)">เติมเพิ่ม:</label>
-        <input type="number" class="missing-input" data-id="${d.id}" min="0" value="${d.std-d.counted}">
+        <input type="number" class="missing-input" data-id="${d.id}" min="0" value="${d.std-have}">
       </div>`;
     body.appendChild(div);
   });
@@ -786,8 +824,11 @@ function confirmRestock() {
     }
   });
   sendToSheet(sheetRows);
+  saveStock();
+  // ✅ ล้าง missing pending หลังยืนยันเท่านั้น
+  saveMissingPending(null);
   renderAll();
-  dismissMissingAlert();
+  document.getElementById('missingAlert').style.display='none';
   showToast('✅ บันทึกการเติมสต๊อกเรียบร้อย','success');
 }
 
@@ -825,6 +866,7 @@ function confirmAddStock() {
       standard:drug.std, counted:drug.current,
       status:drug.current>=drug.std?'ปกติ':'ใกล้หมด',
       note:note||`เพิ่ม ${qty} หน่วย` }]);
+    saveStock();
     renderAll();
     showToast(`✅ เพิ่มสต๊อก ${drug.name} +${qty}`,'success');
   }
@@ -832,15 +874,16 @@ function confirmAddStock() {
 }
 
 // ================================================================
-// History
+// History — ✅ FIX 2+3: ดึงจาก localStorage, ไม่มีปุ่มล้าง
 // ================================================================
 function renderHistory() {
   const list=document.getElementById('historyList');
-  if (!checkHistory.length) {
+  const hist=loadHistory();
+  if (!hist.length) {
     list.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div>ยังไม่มีการบันทึก</div><div style="font-size:12px;margin-top:4px">กด "บันทึกการตรวจ" เพื่อเริ่มต้น</div></div>`;
     return;
   }
-  list.innerHTML=checkHistory.map(h=>`
+  list.innerHTML=hist.map(h=>`
     <div class="history-item">
       <div>
         <div style="font-size:13px;font-weight:700;color:var(--blue-primary)">${h.date}</div>
@@ -853,13 +896,6 @@ function renderHistory() {
       <div><span class="badge badge-blue">เวร ${h.shift}</span></div>
       <div><span class="badge ${h.missing>0?'badge-red':'badge-green'}">${h.missing>0?'⚠️ มีขาด':'✅ ครบ'}</span></div>
     </div>`).join('');
-}
-
-function clearHistory() {
-  if (!confirm('ต้องการล้างประวัติการเช็คทั้งหมด?')) return;
-  checkHistory=[];
-  renderHistory();
-  showToast('ล้างประวัติแล้ว','success');
 }
 
 // ================================================================
@@ -875,10 +911,18 @@ function showToast(msg,type='') {
 }
 
 // ================================================================
-// Init
+// Init — โหลดข้อมูลจาก localStorage เมื่อเปิดหน้าใหม่
 // ================================================================
+applyStock();   // โหลด stock ที่บันทึกไว้
 renderAll();
 renderHistory();
+
+// ✅ FIX 1: ถ้ามียาขาดค้างอยู่ → แสดงทันทีเมื่อเปิดหน้า
+const pendingMissing = loadMissingPending();
+if (pendingMissing && pendingMissing.length > 0) {
+  showMissingAlert(pendingMissing);
+  showToast(`⚠️ ยังมียาขาดสต๊อก ${pendingMissing.length} รายการที่รอเติม`, 'warning');
+}
 </script>
 </body>
 </html>
