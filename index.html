@@ -7,10 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --blue-primary: #0F4C81;
-    --blue-mid: #1565A7;
-    --blue-light: #EAF6FF;
-    --blue-border: #C3E0FF;
+    --blue-deep: #0A3D62;
+    --blue-primary: #1565C0;
+    --blue-mid: #2196F3;
+    --blue-sky: #4FC3F7;
+    --blue-light: #E8F6FF;
+    --blue-border: #BBE3FF;
+    --grad-main: linear-gradient(135deg, #0A3D62 0%, #1565C0 35%, #2196F3 70%, #4FC3F7 100%);
     --white: #FFFFFF;
     --green: #28A745;
     --green-light: #D4EDDA;
@@ -18,36 +21,39 @@
     --yellow-light: #FFF3CD;
     --red: #DC3545;
     --red-light: #F8D7DA;
-    --gray-50: #F8FAFC;
-    --gray-100: #EFF2F7;
-    --gray-200: #E2E8F0;
-    --gray-400: #94A3B8;
-    --gray-600: #475569;
-    --gray-800: #1E293B;
-    --shadow-sm: 0 1px 3px rgba(15,76,129,0.08);
-    --shadow-md: 0 4px 16px rgba(15,76,129,0.12);
-    --shadow-lg: 0 8px 32px rgba(15,76,129,0.18);
-    --radius: 14px;
-    --radius-sm: 8px;
+    --gray-50: #F4FAFF;
+    --gray-100: #E9F5FF;
+    --gray-200: #D3EAFC;
+    --gray-400: #7FA8C9;
+    --gray-600: #3D6B8F;
+    --gray-800: #0F2A44;
+    --shadow-sm: 0 1px 3px rgba(21,101,192,0.1);
+    --shadow-md: 0 4px 16px rgba(21,101,192,0.16);
+    --shadow-lg: 0 8px 32px rgba(21,101,192,0.25);
+    --radius: 16px;
+    --radius-sm: 10px;
   }
   [data-theme="dark"] {
-    --blue-primary: #4DA3FF;
-    --blue-mid: #3A91EE;
-    --blue-light: #0D1F33;
-    --blue-border: #1A3A5C;
-    --white: #0A1628;
+    --blue-deep: #4FC3F7;
+    --blue-primary: #5CACFF;
+    --blue-mid: #4FA3F7;
+    --blue-sky: #7DD3FC;
+    --blue-light: #0B1F33;
+    --blue-border: #16334F;
+    --grad-main: linear-gradient(135deg, #021A33 0%, #0A3D62 35%, #1565C0 70%, #2196F3 100%);
+    --white: #081826;
     --green: #4CCA6B;
     --green-light: #0D2B15;
     --yellow: #FFD84D;
     --yellow-light: #2B2000;
     --red: #FF6B78;
     --red-light: #2B0A0D;
-    --gray-50: #0D1A2B;
-    --gray-100: #0F2030;
-    --gray-200: #1A3050;
-    --gray-400: #5A7A9A;
-    --gray-600: #8AAAC8;
-    --gray-800: #D0E8FF;
+    --gray-50: #061320;
+    --gray-100: #0A1E30;
+    --gray-200: #15324C;
+    --gray-400: #5C8AB0;
+    --gray-600: #8FC1E8;
+    --gray-800: #DCF0FF;
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
     --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
     --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
@@ -56,36 +62,39 @@
   body { font-family: 'Sarabun','Inter',sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; transition: background 0.3s,color 0.3s; }
 
   /* NAV */
-  .topnav { background: var(--blue-primary); color:#fff; padding:0 24px; height:60px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(15,76,129,0.3); }
+  .topnav { background: var(--grad-main); color:#fff; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 4px 20px rgba(10,61,98,0.35); }
   .topnav-brand { display:flex; align-items:center; gap:12px; }
-  .topnav-brand .logo { width:36px; height:36px; background:rgba(255,255,255,0.2); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px; }
-  .topnav-brand h1 { font-size:16px; font-weight:600; line-height:1.2; }
-  .topnav-brand h1 small { display:block; font-size:11px; font-weight:400; opacity:0.8; }
+  .topnav-brand .logo { width:42px; height:42px; background:rgba(255,255,255,0.22); border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:inset 0 0 0 2px rgba(255,255,255,0.3); }
+  .topnav-brand h1 { font-size:16px; font-weight:700; line-height:1.2; }
+  .topnav-brand h1 small { display:block; font-size:11px; font-weight:400; opacity:0.85; }
   .topnav-actions { display:flex; align-items:center; gap:10px; }
-  .btn-icon { width:36px; height:36px; border:none; border-radius:8px; background:rgba(255,255,255,0.15); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; transition:background 0.2s; }
-  .btn-icon:hover { background:rgba(255,255,255,0.25); }
-  .clock-badge { background:rgba(255,255,255,0.15); border-radius:8px; padding:6px 12px; font-size:13px; font-weight:500; }
+  .btn-icon { width:38px; height:38px; border:none; border-radius:11px; background:rgba(255,255,255,0.18); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:17px; transition:transform 0.2s; }
+  .btn-icon:hover { background:rgba(255,255,255,0.28); transform:scale(1.06); }
+  .clock-badge { background:rgba(255,255,255,0.18); border-radius:11px; padding:7px 13px; font-size:13px; font-weight:600; }
 
   /* LAYOUT */
   .main-wrap { max-width:1200px; margin:0 auto; padding:20px 16px 40px; }
 
   /* HERO */
-  .scan-hero { background:linear-gradient(135deg,var(--blue-primary) 0%,var(--blue-mid) 100%); border-radius:var(--radius); padding:28px; margin-bottom:20px; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
-  .scan-hero-text h2 { font-size:22px; font-weight:700; margin-bottom:4px; }
-  .scan-hero-text p { font-size:14px; opacity:0.85; }
-  .btn-scan { background:#fff; color:var(--blue-primary); border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:8px; transition:transform 0.15s,box-shadow 0.15s; font-family:'Sarabun',sans-serif; box-shadow:0 2px 12px rgba(0,0,0,0.2); }
-  .btn-scan:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .scan-hero { background:var(--grad-main); border-radius:var(--radius); padding:28px 30px; margin-bottom:20px; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; position:relative; overflow:hidden; }
+  .scan-hero::before { content:'🐧'; position:absolute; font-size:96px; opacity:0.13; right:-8px; top:-22px; transform:rotate(12deg); }
+  .scan-hero::after { content:'💊'; position:absolute; font-size:58px; opacity:0.16; left:-6px; bottom:-12px; transform:rotate(-15deg); }
+  .scan-hero-text { position:relative; z-index:1; }
+  .scan-hero-text h2 { font-size:22px; font-weight:800; margin-bottom:4px; }
+  .scan-hero-text p { font-size:14px; opacity:0.9; }
+  .btn-scan { background:#fff; color:var(--blue-primary); border:none; border-radius:12px; padding:13px 24px; font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px; transition:transform 0.15s,box-shadow 0.15s; font-family:'Sarabun',sans-serif; box-shadow:0 4px 16px rgba(0,0,0,0.2); position:relative; z-index:1; }
+  .btn-scan:hover { transform:translateY(-2px) scale(1.02); box-shadow:0 6px 22px rgba(0,0,0,0.28); }
 
   /* STATS */
-  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
-  .stat-card { background:var(--white); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:14px; border:1px solid var(--gray-200); transition:box-shadow 0.2s; }
-  .stat-card:hover { box-shadow:var(--shadow-md); }
-  .stat-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-  .stat-icon.blue { background:var(--blue-light); }
+  .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+  .stat-card { background:var(--white); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:14px; border:2px solid var(--gray-200); transition:transform 0.2s,box-shadow 0.2s; }
+  .stat-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); }
+  .stat-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .stat-icon.blue { background:linear-gradient(135deg,#E8F6FF,#BBE3FF); }
   .stat-icon.green { background:var(--green-light); }
   .stat-icon.yellow { background:var(--yellow-light); }
-  .stat-icon.red { background:var(--red-light); }
-  .stat-num { font-size:26px; font-weight:700; line-height:1; }
+  .stat-icon.red { background:linear-gradient(135deg,#FFE0E4,#FFC2CC); }
+  .stat-num { font-size:27px; font-weight:800; line-height:1; }
   .stat-num.green { color:var(--green); }
   .stat-num.yellow { color:var(--yellow); }
   .stat-num.red { color:var(--red); }
@@ -93,10 +102,10 @@
   .stat-label { font-size:12px; color:var(--gray-600); margin-top:2px; }
 
   /* CARDS */
-  .section-card { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-sm); border:1px solid var(--gray-200); margin-bottom:20px; overflow:hidden; }
-  .section-header { padding:16px 20px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-  .section-title { font-size:15px; font-weight:600; display:flex; align-items:center; gap:8px; }
-  .badge { display:inline-flex; align-items:center; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600; }
+  .section-card { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-sm); border:2px solid var(--gray-200); margin-bottom:20px; overflow:hidden; }
+  .section-header { padding:16px 20px; border-bottom:2px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; background:linear-gradient(135deg,var(--gray-50),var(--blue-light)); }
+  .section-title { font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px; color:var(--blue-deep); }
+  .badge { display:inline-flex; align-items:center; padding:3px 11px; border-radius:20px; font-size:12px; font-weight:700; }
   .badge-green { background:var(--green-light); color:var(--green); }
   .badge-yellow { background:var(--yellow-light); color:#856404; }
   .badge-red { background:var(--red-light); color:var(--red); }
@@ -104,12 +113,12 @@
 
   /* TABLE */
   .drug-table { width:100%; border-collapse:collapse; }
-  .drug-table th { background:var(--gray-50); padding:10px 16px; text-align:left; font-size:12px; font-weight:600; color:var(--gray-600); text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid var(--gray-200); }
+  .drug-table th { background:linear-gradient(135deg,#EEF8FF,#E0F2FF); padding:11px 16px; text-align:left; font-size:11px; font-weight:700; color:var(--blue-deep); text-transform:uppercase; letter-spacing:0.05em; border-bottom:2px solid var(--gray-200); }
   .drug-table td { padding:12px 16px; border-bottom:1px solid var(--gray-100); font-size:14px; vertical-align:middle; }
   .drug-table tr:last-child td { border-bottom:none; }
   .drug-table tr:hover td { background:var(--gray-50); }
   .drug-name { font-weight:500; }
-  .qty-pill { display:inline-flex; align-items:center; justify-content:center; width:36px; height:28px; border-radius:8px; font-size:13px; font-weight:700; }
+  .qty-pill { display:inline-flex; align-items:center; justify-content:center; width:38px; height:28px; border-radius:9px; font-size:13px; font-weight:700; }
   .qty-ok { background:var(--green-light); color:var(--green); }
   .qty-warn { background:var(--yellow-light); color:#856404; }
   .qty-critical { background:var(--red-light); color:var(--red); }
@@ -120,40 +129,40 @@
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
   .btn-add { background:var(--blue-light); color:var(--blue-primary); border:1px solid var(--blue-border); border-radius:6px; padding:5px 12px; font-size:12px; font-weight:600; cursor:pointer; transition:background 0.2s; font-family:'Sarabun',sans-serif; }
   .btn-add:hover { background:var(--blue-border); }
-  .cat-row td { background:var(--blue-light); font-size:12px; font-weight:700; color:var(--blue-primary); padding:7px 16px; letter-spacing:0.05em; text-transform:uppercase; }
+  .cat-row td { background:linear-gradient(135deg,var(--blue-light),var(--blue-border)); font-size:11px; font-weight:800; color:var(--blue-deep); padding:7px 16px; letter-spacing:0.05em; text-transform:uppercase; }
 
   /* SHIFT TABS */
   .shift-tabs { display:flex; gap:6px; }
-  .shift-tab { padding:6px 14px; border-radius:8px; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'Sarabun',sans-serif; transition:all 0.2s; }
-  .shift-tab.active { background:var(--blue-primary); color:#fff; }
+  .shift-tab { padding:6px 14px; border-radius:9px; font-size:12px; font-weight:700; border:none; cursor:pointer; font-family:'Sarabun',sans-serif; transition:all 0.2s; }
+  .shift-tab.active { background:var(--grad-main); color:#fff; box-shadow:var(--shadow-sm); }
   .shift-tab:not(.active) { background:var(--gray-100); color:var(--gray-600); }
   .shift-tab:not(.active):hover { background:var(--blue-light); color:var(--blue-primary); }
 
   /* PAGE TABS */
-  .page-tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--gray-100); border-radius:12px; padding:4px; }
-  .page-tab { flex:1; padding:10px; border:none; border-radius:8px; font-size:14px; font-weight:500; cursor:pointer; font-family:'Sarabun',sans-serif; transition:all 0.2s; text-align:center; }
-  .page-tab.active { background:var(--white); color:var(--blue-primary); font-weight:700; box-shadow:var(--shadow-sm); }
+  .page-tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--gray-100); border-radius:14px; padding:4px; }
+  .page-tab { flex:1; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Sarabun',sans-serif; transition:all 0.2s; text-align:center; }
+  .page-tab.active { background:var(--white); color:var(--blue-primary); font-weight:800; box-shadow:var(--shadow-sm); }
   .page-tab:not(.active) { background:transparent; color:var(--gray-600); }
   .tab-content { display:none; }
   .tab-content.active { display:block; }
 
   /* MODAL */
-  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:flex; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(2px); }
+  .modal-overlay { position:fixed; inset:0; background:rgba(10,30,55,0.5); z-index:200; display:flex; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(3px); }
   .modal-overlay.hidden { display:none; }
   .modal-box { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-lg); width:100%; max-width:520px; max-height:90vh; overflow-y:auto; animation:slideUp 0.25s ease; }
   @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-  .modal-header { padding:20px 24px 16px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--white); z-index:1; border-radius:var(--radius) var(--radius) 0 0; }
-  .modal-header h3 { font-size:18px; font-weight:700; }
+  .modal-header { padding:20px 24px 16px; border-bottom:2px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--white); z-index:1; border-radius:var(--radius) var(--radius) 0 0; }
+  .modal-header h3 { font-size:18px; font-weight:800; color:var(--blue-deep); }
   .modal-body { padding:20px 24px; }
-  .modal-footer { padding:16px 24px; border-top:1px solid var(--gray-200); display:flex; gap:10px; justify-content:flex-end; }
+  .modal-footer { padding:16px 24px; border-top:2px solid var(--gray-200); display:flex; gap:10px; justify-content:flex-end; }
   .form-group { margin-bottom:16px; }
   .form-label { display:block; font-size:13px; font-weight:600; color:var(--gray-600); margin-bottom:6px; }
   .form-control { width:100%; padding:10px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--gray-200); background:var(--gray-50); font-size:15px; color:var(--gray-800); font-family:'Sarabun',sans-serif; transition:border-color 0.2s,box-shadow 0.2s; outline:none; }
-  .form-control:focus { border-color:var(--blue-primary); box-shadow:0 0 0 3px rgba(15,76,129,0.1); background:var(--white); }
+  .form-control:focus { border-color:var(--blue-primary); box-shadow:0 0 0 3px rgba(21,101,192,0.12); background:var(--white); }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .btn { padding:10px 20px; border-radius:var(--radius-sm); font-size:14px; font-weight:600; cursor:pointer; border:none; font-family:'Sarabun',sans-serif; transition:all 0.2s; }
-  .btn-primary { background:var(--blue-primary); color:#fff; }
-  .btn-primary:hover { background:var(--blue-mid); }
+  .btn { padding:10px 20px; border-radius:var(--radius-sm); font-size:14px; font-weight:700; cursor:pointer; border:none; font-family:'Sarabun',sans-serif; transition:all 0.2s; }
+  .btn-primary { background:var(--grad-main); color:#fff; }
+  .btn-primary:hover { filter:brightness(1.08); }
   .btn-success { background:var(--green); color:#fff; }
   .btn-success:hover { filter:brightness(1.1); }
   .btn-danger { background:var(--red); color:#fff; }
@@ -173,33 +182,33 @@
   .missing-input:focus { border-color:var(--blue-primary); outline:none; }
 
   /* HISTORY */
-  .history-item { padding:12px 20px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; gap:14px; }
+  .history-item { padding:13px 20px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; gap:14px; }
   .history-item:last-child { border-bottom:none; }
   .history-info { flex:1; }
-  .history-nurse { font-size:13px; font-weight:500; }
+  .history-nurse { font-size:13px; font-weight:600; }
   .history-detail { font-size:12px; color:var(--gray-400); }
 
   /* SUCCESS */
   .success-screen { text-align:center; padding:32px 24px; }
   .success-icon { font-size:64px; margin-bottom:16px; }
-  .success-title { font-size:22px; font-weight:700; color:var(--green); margin-bottom:8px; }
+  .success-title { font-size:22px; font-weight:800; color:var(--green); margin-bottom:8px; }
   .success-sub { font-size:14px; color:var(--gray-600); }
 
   /* TOAST */
   .toast-container { position:fixed; bottom:20px; right:20px; z-index:300; display:flex; flex-direction:column; gap:8px; }
-  .toast { background:var(--gray-800); color:#fff; padding:12px 18px; border-radius:10px; font-size:14px; font-weight:500; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:8px; animation:toastIn 0.3s ease; max-width:320px; }
+  .toast { background:var(--blue-deep); color:#fff; padding:12px 18px; border-radius:12px; font-size:14px; font-weight:600; box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:8px; animation:toastIn 0.3s ease; max-width:320px; }
   .toast.success { background:var(--green); }
   .toast.error { background:var(--red); }
-  .toast.warning { background:#cc9500; }
+  .toast.warning { background:#D98C00; }
   @keyframes toastIn { from{transform:translateX(100%);opacity:0} to{transform:translateX(0);opacity:1} }
 
   /* FOOTER */
-  .footer { text-align:center; padding:24px; font-size:12px; color:var(--gray-400); border-top:1px solid var(--gray-200); margin-top:10px; }
+  .footer { text-align:center; padding:24px; font-size:12px; color:var(--gray-400); border-top:2px solid var(--gray-200); margin-top:10px; }
   .footer strong { color:var(--blue-primary); }
 
   /* EMPTY */
   .empty-state { padding:40px; text-align:center; color:var(--gray-400); }
-  .empty-state .empty-icon { font-size:40px; margin-bottom:10px; }
+  .empty-state .empty-icon { font-size:42px; margin-bottom:10px; }
 
   /* RESPONSIVE */
   @media (max-width:768px) {
@@ -220,7 +229,7 @@
 <!-- TOP NAV -->
 <nav class="topnav">
   <div class="topnav-brand">
-    <div class="logo">🏥</div>
+    <div class="logo">🐧💊</div>
     <h1>ระบบยาสำรอง
       <small>หอผู้ป่วยหญิง • โรงพยาบาลฮอด</small>
     </h1>
@@ -237,12 +246,11 @@
   <div class="missing-alert" id="missingAlert" style="display:none">
     <div class="missing-alert-header">
       <span>⚠️</span>
-      <span>ยาขาดสต๊อก — กรุณาเติมและยืนยันจำนวน</span>
+      <span>ยาขาดสต๊อก — รอการเติม (sync ทุกเครื่อง)</span>
     </div>
     <div class="missing-alert-body" id="missingAlertBody"></div>
     <div style="padding:0 20px 16px;display:flex;gap:10px;justify-content:flex-end">
-      <button class="btn btn-secondary" onclick="dismissMissingAlert()">ยกเลิก</button>
-      <button class="btn btn-danger" onclick="confirmRestock()">✓ ยืนยันเติมสต๊อก</button>
+      <button class="btn btn-danger" onclick="confirmRestock()">✓ ยืนยันเติมสต๊อกครบแล้ว</button>
     </div>
   </div>
 
@@ -250,7 +258,7 @@
   <div class="scan-hero">
     <div class="scan-hero-text">
       <h2>📋 บันทึกการเช็คสต๊อกยา</h2>
-      <p>กดปุ่มด้านขวาเพื่อเริ่มบันทึก • ข้อมูลบันทึกใน Google Sheet อัตโนมัติ</p>
+      <p>กดปุ่มด้านขวาเพื่อเริ่มบันทึก • ข้อมูล sync ทุกเครื่องผ่าน Google Sheet</p>
     </div>
     <div>
       <button class="btn-scan" onclick="openCheckModal()">
@@ -270,10 +278,6 @@
       <div><div class="stat-num green" id="statOk">0</div><div class="stat-label">ยาครบ / ปกติ</div></div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon yellow">⚠️</div>
-      <div><div class="stat-num yellow" id="statWarn">0</div><div class="stat-label">ยาใกล้หมด</div></div>
-    </div>
-    <div class="stat-card">
       <div class="stat-icon red">🚨</div>
       <div><div class="stat-num red" id="statCritical">0</div><div class="stat-label">ยาขาดสต๊อก</div></div>
     </div>
@@ -281,16 +285,16 @@
 
   <!-- TABS -->
   <div class="page-tabs">
-    <button class="page-tab active" onclick="switchTab('tab-reserve',this)">🗄️ ยาสำรอง</button>
+    <button class="page-tab active" onclick="switchTab('tab-reserve',this)">🐧 ยาสำรอง</button>
     <button class="page-tab" onclick="switchTab('tab-narcotic',this)">💉 ยาเสพติด</button>
-    <button class="page-tab" onclick="switchTab('tab-history',this)">📜 ประวัติการเช็ค</button>
+    <button class="page-tab" onclick="switchTab('tab-history',this)">📋 ประวัติการเช็ค</button>
   </div>
 
   <!-- TAB: ยาสำรอง -->
   <div class="tab-content active" id="tab-reserve">
     <div class="section-card">
       <div class="section-header">
-        <div class="section-title">🗄️ บัญชียาสำรองในหอผู้ป่วย</div>
+        <div class="section-title">🐧 บัญชียาสำรองในหอผู้ป่วย</div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <div class="shift-tabs">
             <button class="shift-tab active" onclick="setShift('N',this)">เวร N</button>
@@ -302,7 +306,7 @@
       </div>
       <div style="overflow-x:auto">
         <table class="drug-table">
-          <thead><tr><th>#</th><th>ชื่อยา</th><th>จำนวนมาตรฐาน</th><th>สต๊อกปัจจุบัน</th><th>สถานะ</th><th>ดำเนินการ</th></tr></thead>
+          <thead><tr><th>#</th><th>ชื่อยา</th><th>จำนวนมาตรฐาน</th><th>สต๊อกปัจจุบัน</th><th>สถานะ</th></tr></thead>
           <tbody id="reserveTableBody"></tbody>
         </table>
       </div>
@@ -322,7 +326,7 @@
       </div>
       <div style="overflow-x:auto">
         <table class="drug-table">
-          <thead><tr><th>#</th><th>ชื่อยา</th><th>จำนวนมาตรฐาน</th><th>สต๊อกปัจจุบัน</th><th>สถานะ</th><th>ดำเนินการ</th></tr></thead>
+          <thead><tr><th>#</th><th>ชื่อยา</th><th>จำนวนมาตรฐาน</th><th>สต๊อกปัจจุบัน</th><th>สถานะ</th></tr></thead>
           <tbody id="narcoticTableBody"></tbody>
         </table>
       </div>
@@ -333,7 +337,7 @@
   <div class="tab-content" id="tab-history">
     <div class="section-card">
       <div class="section-header">
-        <div class="section-title">📜 ประวัติการเช็คสต๊อก</div>
+        <div class="section-title">📋 ประวัติการเช็คสต๊อก</div>
       </div>
       <div id="historyList">
         <div class="empty-state">
@@ -420,44 +424,6 @@
   </div>
 </div>
 
-<!-- MODAL: เพิ่มสต๊อก -->
-<div class="modal-overlay hidden" id="addStockModal">
-  <div class="modal-box" style="max-width:400px">
-    <div class="modal-header">
-      <h3>➕ เพิ่มสต๊อกยา</h3>
-      <button class="btn-icon" style="background:var(--gray-100);color:var(--gray-600)" onclick="closeModal('addStockModal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">ชื่อยา</label>
-        <div id="addStockDrugName" style="font-weight:600;font-size:15px;color:var(--blue-primary);padding:8px 0"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">สต๊อกปัจจุบัน</label>
-          <div id="addStockCurrent" style="font-size:22px;font-weight:700;color:var(--red);padding:4px 0">0</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">จำนวนมาตรฐาน</label>
-          <div id="addStockStd" style="font-size:22px;font-weight:700;color:var(--green);padding:4px 0">0</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">จำนวนที่เติมเข้า *</label>
-        <input type="number" class="form-control" id="addStockQty" min="1" placeholder="ระบุจำนวน">
-      </div>
-      <div class="form-group">
-        <label class="form-label">หมายเหตุ</label>
-        <input type="text" class="form-control" id="addStockNote" placeholder="เช่น เบิกจากห้องยา">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('addStockModal')">ยกเลิก</button>
-      <button class="btn btn-success" onclick="confirmAddStock()">✓ บันทึกเพิ่มสต๊อก</button>
-    </div>
-  </div>
-</div>
-
 <script>
 // ================================================================
 // ข้อมูลยา
@@ -485,17 +451,19 @@ const DRUGS_NARCOTIC = [
 ];
 
 // ================================================================
-// Google Sheet — Web App URL
+// Google Sheet — Web App URL & CSV (Single Source of Truth)
 // ================================================================
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbz0bCigT10DbL0RdEcdzbX8e3Xo8REldtCfPrtyhCoGxZ16eZIhFw-ZNks9GU0enAHyiA/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwsRk5808gnIaM2Gl1RORYl7UWMmd03ZV4IQS2Cx6u9NbuWsj3ZLYB0FuC0c1Eo3bDJSA/exec';
+const DRUG_SHEET_ID = '1-4Vow4x3kTtnhmaIbjE0n_7iXC_oe4ccQnyxWypJXj0';
+const STATUS_CSV = `https://docs.google.com/spreadsheets/d/${DRUG_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=สถานะสต๊อก`;
+const FULLSTOCK_CSV = `https://docs.google.com/spreadsheets/d/${DRUG_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=สต๊อกปัจจุบัน`;
 
 async function sendToSheet(rows) {
   if (!rows.length) return;
   try {
     showToast('⏳ กำลังบันทึกลง Google Sheet...', '');
     await fetch(GAS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ rows })
     });
@@ -506,29 +474,122 @@ async function sendToSheet(rows) {
   }
 }
 
+async function setSheetPending(items) {
+  try {
+    await fetch(GAS_URL, {
+      method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ rows:[{ type:'SET_STATUS', status:'PENDING', items }] })
+    });
+  } catch(e){}
+}
+
+async function clearSheetPending() {
+  try {
+    await fetch(GAS_URL, {
+      method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ rows:[{ type:'SET_STATUS', status:'CLEARED', items:[] }] })
+    });
+  } catch(e){}
+}
+
+// ส่ง stock เต็มทุกชิ้น (รวมยาสำรอง+ยาเสพติด) ไป Sheet — single source of truth
+async function setSheetFullStock() {
+  const stockMap = {};
+  [...DRUGS_RESERVE, ...DRUGS_NARCOTIC].forEach(d => {
+    stockMap[d.id] = { current: d.current, std: d.std, name: d.name, category: d.category, location: d.location };
+  });
+  try {
+    await fetch(GAS_URL, {
+      method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ rows:[{ type:'SET_FULLSTOCK', stock: stockMap }] })
+    });
+  } catch(e){ console.error('setSheetFullStock error', e); }
+}
+
+// Parser CSV รองรับ comma/quote ซ้อนในฟิลด์ (เช่น JSON string)
+function parseCsvLine(line){
+  const result=[]; let cur='', inQuotes=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(inQuotes){
+      if(ch==='"'){ if(line[i+1]==='"'){cur+='"';i++;} else inQuotes=false; }
+      else cur+=ch;
+    } else {
+      if(ch==='"') inQuotes=true;
+      else if(ch===','){ result.push(cur); cur=''; }
+      else cur+=ch;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+// อ่าน CSV (รวมหลายบรรทัดถ้า field มี \n อยู่ใน quote) แล้ว decode utf-8 ชัดเจน
+async function fetchCsvFirstDataRow(url){
+  try{
+    const res = await fetch(url+'&t='+Date.now(), {method:'GET', cache:'no-store'});
+    if(!res.ok) return null;
+    const buffer = await res.arrayBuffer();
+    const csv = new TextDecoder('utf-8').decode(buffer);
+    const rawLines = csv.trim().split('\n');
+    if(rawLines.length < 2) return null;
+    const mergedLines=[]; let buf='';
+    rawLines.forEach(line=>{
+      buf = buf ? buf+'\n'+line : line;
+      const quoteCount=(buf.match(/"/g)||[]).length;
+      if(quoteCount % 2 === 0){ mergedLines.push(buf); buf=''; }
+    });
+    if(buf) mergedLines.push(buf);
+    if(mergedLines.length < 2) return null;
+    return parseCsvLine(mergedLines[1]);
+  } catch(e){ console.error('fetchCsvFirstDataRow error:', e); return null; }
+}
+
+async function fetchSheetStatus(){
+  const cols = await fetchCsvFirstDataRow(STATUS_CSV);
+  if(!cols) return {status:'CLEARED', items:[]};
+  let items=[];
+  try{ items=JSON.parse(cols[1]||'[]'); }catch(e){ console.error('status JSON parse error:',e); }
+  return { status:(cols[0]||'CLEARED').trim(), items };
+}
+
+async function fetchSheetFullStock(){
+  const cols = await fetchCsvFirstDataRow(FULLSTOCK_CSV);
+  if(!cols) return null;
+  let stock={};
+  try{ stock=JSON.parse(cols[0]||'{}'); }catch(e){ console.error('fullstock JSON parse error:',e); }
+  return stock;
+}
+
+function applySheetFullStock(stockMap){
+  if(!stockMap) return false;
+  let changed=false;
+  [...DRUGS_RESERVE,...DRUGS_NARCOTIC].forEach(d=>{
+    if(stockMap[d.id] && stockMap[d.id].current!==undefined){
+      if(d.current!==stockMap[d.id].current) changed=true;
+      d.current=stockMap[d.id].current;
+    }
+  });
+  return changed;
+}
+
 // ================================================================
-// State — เก็บใน localStorage ให้คงอยู่ข้ามผู้ใช้/รีเฟรช
+// localStorage — สำรองชั่วคราวก่อน Sheet โหลดเสร็จ + เก็บประวัติ
 // ================================================================
-const LS_HISTORY = 'drug_history_v1';
-const LS_MISSING = 'drug_missing_v1';
-const LS_STOCK   = 'drug_stock_v1';
+const LS_HISTORY = 'drug_history_v2';
+const LS_STOCK   = 'drug_stock_v2';
 
 let currentAddDrugId = null;
 let checkStep = 1;
 let isDark = false;
+let lastKnownStatus = 'CLEARED';
+let pollInterval = null;
 
 function loadHistory() {
   try { return JSON.parse(localStorage.getItem(LS_HISTORY)||'[]'); } catch(e){ return []; }
 }
 function saveHistory(arr) {
   localStorage.setItem(LS_HISTORY, JSON.stringify(arr));
-}
-function loadMissingPending() {
-  try { return JSON.parse(localStorage.getItem(LS_MISSING)||'null'); } catch(e){ return null; }
-}
-function saveMissingPending(arr) {
-  if(arr&&arr.length>0) localStorage.setItem(LS_MISSING, JSON.stringify(arr));
-  else localStorage.removeItem(LS_MISSING);
 }
 function saveStock() {
   const s={};
@@ -566,15 +627,14 @@ function toggleTheme() {
 // ================================================================
 function updateStats() {
   const all = [...DRUGS_RESERVE, ...DRUGS_NARCOTIC];
-  let ok=0, warn=0, critical=0;
+  let ok=0, critical=0;
   all.forEach(d => {
     if (d.current === 0) critical++;
-    else if (d.current / d.std < 0.5) warn++;
+    else if (d.current / d.std < 0.5) ok++; // ใกล้หมดยังนับเป็นยังไม่ขาด แต่ไม่แยกการ์ดแล้ว
     else ok++;
   });
   document.getElementById('statTotal').textContent = all.length;
   document.getElementById('statOk').textContent = ok;
-  document.getElementById('statWarn').textContent = warn;
   document.getElementById('statCritical').textContent = critical;
 }
 
@@ -598,7 +658,7 @@ function renderTable(drugs, tbodyId) {
     if (d.category !== lastCat) {
       const tr = document.createElement('tr');
       tr.className = 'cat-row';
-      tr.innerHTML = `<td colspan="6">📁 ${d.category} — ${d.location}</td>`;
+      tr.innerHTML = `<td colspan="5">📁 ${d.category} — ${d.location}</td>`;
       tbody.appendChild(tr);
       lastCat = d.category;
     }
@@ -609,8 +669,7 @@ function renderTable(drugs, tbodyId) {
       <td><div class="drug-name">${d.name}</div></td>
       <td><span class="qty-pill" style="background:var(--blue-light);color:var(--blue-primary)">${d.std}</span></td>
       <td><span class="qty-pill ${st.qCls}">${d.current}</span></td>
-      <td><span class="status-dot ${st.dotCls}"></span><span class="badge badge-${st.cls==='green'?'green':st.cls==='yellow'?'yellow':'red'}">${st.label}</span></td>
-      <td><button class="btn-add" onclick="openAddStock('${d.id}')">+ เติม</button></td>`;
+      <td><span class="status-dot ${st.dotCls}"></span><span class="badge badge-${st.cls==='green'?'green':st.cls==='yellow'?'yellow':'red'}">${st.label}</span></td>`;
     tbody.appendChild(tr);
   });
 }
@@ -723,7 +782,7 @@ function highlightInput(inp, std) {
 }
 
 // ================================================================
-// Save check → Google Sheet
+// Save check → Google Sheet (CHECK rows + full stock + status)
 // ================================================================
 function saveCheckRecord() {
   const date   = document.getElementById('checkDate').value;
@@ -749,24 +808,25 @@ function saveCheckRecord() {
     }
   });
 
-  // บันทึก stock + ประวัติลง localStorage
   saveStock();
   const hist = loadHistory();
   hist.unshift({ date, time, shift, nurse, ok, missing:missing.length, timestamp:Date.now() });
   saveHistory(hist);
 
   sendToSheet(sheetRows);
+  setSheetFullStock(); // ✅ sync stock เต็มทุกชิ้น (ยาสำรอง+เสพติด) ไป Sheet
   renderAll();
   renderHistory();
 
   if (missing.length>0) {
-    // ✅ FIX 1: บันทึก missing ค้างไว้ใน localStorage
-    saveMissingPending(missing);
+    setSheetPending(missing); // ✅ sync สถานะ PENDING ทุกเครื่อง
+    lastKnownStatus='PENDING';
     showMissingAlert(missing);
     closeModal('checkModal');
-    showToast(`⚠️ พบยาขาดสต๊อก ${missing.length} รายการ`,'warning');
+    showToast(`⚠️ พบยาขาดสต๊อก ${missing.length} รายการ — แจ้งเตือนทุกเครื่องแล้ว`,'warning');
   } else {
-    saveMissingPending(null);
+    clearSheetPending();
+    lastKnownStatus='CLEARED';
     checkStep=3;
     document.getElementById('checkStep2').style.display='none';
     document.getElementById('checkStep3').style.display='';
@@ -779,7 +839,7 @@ function saveCheckRecord() {
 }
 
 // ================================================================
-// Missing alert — คงค้างจนกว่าจะกดยืนยัน
+// Missing alert — sync ทุกเครื่องผ่าน Sheet, คงค้างจนกว่าจะยืนยัน
 // ================================================================
 function showMissingAlert(missing) {
   const body=document.getElementById('missingAlertBody');
@@ -825,56 +885,16 @@ function confirmRestock() {
   });
   sendToSheet(sheetRows);
   saveStock();
-  // ✅ ล้าง missing pending หลังยืนยันเท่านั้น
-  saveMissingPending(null);
+  setSheetFullStock();   // ✅ sync stock เต็มทุกครั้งที่เติม
+  clearSheetPending();   // ✅ ล้างสถานะ PENDING ทุกเครื่อง
+  lastKnownStatus='CLEARED';
   renderAll();
   document.getElementById('missingAlert').style.display='none';
-  showToast('✅ บันทึกการเติมสต๊อกเรียบร้อย','success');
-}
-
-function dismissMissingAlert() {
-  document.getElementById('missingAlert').style.display='none';
+  showToast('✅ ยืนยันเติมสต๊อกครบ — ปลดล็อกทุกเครื่องแล้ว','success');
 }
 
 // ================================================================
-// Add stock modal
-// ================================================================
-function openAddStock(id) {
-  const drug=[...DRUGS_RESERVE,...DRUGS_NARCOTIC].find(d=>d.id===id);
-  if (!drug) return;
-  currentAddDrugId=id;
-  document.getElementById('addStockDrugName').textContent=drug.name;
-  document.getElementById('addStockCurrent').textContent=drug.current;
-  document.getElementById('addStockStd').textContent=drug.std;
-  document.getElementById('addStockQty').value=Math.max(0,drug.std-drug.current);
-  document.getElementById('addStockNote').value='';
-  openModal('addStockModal');
-}
-
-function confirmAddStock() {
-  const qty=parseInt(document.getElementById('addStockQty').value)||0;
-  if (qty<=0) { showToast('กรุณาระบุจำนวนที่ถูกต้อง','error'); return; }
-  const note=document.getElementById('addStockNote').value.trim();
-  const drug=[...DRUGS_RESERVE,...DRUGS_NARCOTIC].find(d=>d.id===currentAddDrugId);
-  if (drug) {
-    drug.current=Math.min(drug.current+qty,drug.std*2);
-    const now=new Date();
-    sendToSheet([{ type:'ADD_STOCK',
-      date:now.toISOString().split('T')[0], time:now.toTimeString().slice(0,5),
-      shift:'-', nurse:'เพิ่มสต๊อก',
-      drugName:drug.name, category:drug.category, location:drug.location,
-      standard:drug.std, counted:drug.current,
-      status:drug.current>=drug.std?'ปกติ':'ใกล้หมด',
-      note:note||`เพิ่ม ${qty} หน่วย` }]);
-    saveStock();
-    renderAll();
-    showToast(`✅ เพิ่มสต๊อก ${drug.name} +${qty}`,'success');
-  }
-  closeModal('addStockModal');
-}
-
-// ================================================================
-// History — ✅ FIX 2+3: ดึงจาก localStorage, ไม่มีปุ่มล้าง
+// History
 // ================================================================
 function renderHistory() {
   const list=document.getElementById('historyList');
@@ -911,18 +931,59 @@ function showToast(msg,type='') {
 }
 
 // ================================================================
-// Init — โหลดข้อมูลจาก localStorage เมื่อเปิดหน้าใหม่
+// Polling — ดึง full stock + status จาก Sheet ทุก 15 วินาที (sync ทุกเครื่อง)
 // ================================================================
-applyStock();   // โหลด stock ที่บันทึกไว้
+function startPolling(){
+  if(pollInterval) clearInterval(pollInterval);
+  pollInterval=setInterval(async()=>{
+    const fullStock = await fetchSheetFullStock();
+    if(fullStock){
+      const changed = applySheetFullStock(fullStock);
+      if(changed){ saveStock(); renderAll(); }
+    }
+    const data = await fetchSheetStatus();
+    if(!data) return;
+    if(data.status==='PENDING' && lastKnownStatus!=='PENDING'){
+      lastKnownStatus='PENDING';
+      if(data.items && data.items.length>0){
+        showMissingAlert(data.items);
+        showToast(`🚨 มียาขาดสต๊อก ${data.items.length} รายการ`,'warning');
+      }
+    } else if(data.status==='CLEARED' && lastKnownStatus==='PENDING'){
+      lastKnownStatus='CLEARED';
+      document.getElementById('missingAlert').style.display='none';
+      renderAll();
+      showToast('✅ สต๊อกได้รับการเติมครบแล้ว','success');
+    }
+  },15000);
+}
+
+// ================================================================
+// Init — โหลด localStorage ก่อน แล้วดึงจาก Sheet (single source of truth)
+// ================================================================
+applyStock();
 renderAll();
 renderHistory();
 
-// ✅ FIX 1: ถ้ามียาขาดค้างอยู่ → แสดงทันทีเมื่อเปิดหน้า
-const pendingMissing = loadMissingPending();
-if (pendingMissing && pendingMissing.length > 0) {
-  showMissingAlert(pendingMissing);
-  showToast(`⚠️ ยังมียาขาดสต๊อก ${pendingMissing.length} รายการที่รอเติม`, 'warning');
-}
+(async()=>{
+  // ดึง stock เต็มจาก Sheet มาทับ — ทุกเครื่องเห็นตรงกัน
+  const fullStock = await fetchSheetFullStock();
+  if(fullStock){
+    applySheetFullStock(fullStock);
+    saveStock();
+    renderAll();
+  }
+  // เช็คสถานะ PENDING/CLEARED
+  const data = await fetchSheetStatus();
+  if(data && data.status==='PENDING' && data.items && data.items.length>0){
+    lastKnownStatus='PENDING';
+    showMissingAlert(data.items);
+    showToast(`⚠️ ยังมียาขาดสต๊อก ${data.items.length} รายการที่รอเติม`,'warning');
+  } else {
+    lastKnownStatus='CLEARED';
+  }
+  startPolling();
+})();
 </script>
 </body>
 </html>
